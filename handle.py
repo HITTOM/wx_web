@@ -9,7 +9,7 @@ class Handle(object):
         try:
             data = web.input()
             if len(data) == 0:
-                return "hello, this is token handle view"
+                return "hello, this is tommi framework"
             signature = data.signature
             timestamp = data.timestamp
             nonce = data.nonce
@@ -32,4 +32,4 @@ class Handle(object):
     def POST(self):
         data = web.input()
         print('post data: ', data)
-        return ""
+        return "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[this is a test]]></Content><MsgId>1234567890123456</MsgId></xml>"
