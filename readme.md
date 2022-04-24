@@ -8,6 +8,7 @@ python main.py 80
 ![image](https://user-images.githubusercontent.com/24716146/164978057-b878546b-37c6-49d0-b2bd-ae0a7f4d59c1.png)
 ### 公众号请求
 用户向公众号请求消息 会调用POST接口
+
 ![image](https://user-images.githubusercontent.com/24716146/164978682-c05a8c76-d336-4070-9ce5-fa4f8b6ad06b.png)
 
 （回包数据要用xml格式，暂没来得及封装，因而会报错）
