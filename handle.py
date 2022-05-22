@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 # filename: handle.py
 
+from lxml import etree
+from utils.mysql_wrapper import MysqlWrapper
+
 import hashlib
 import web
+
 
 class Handle(object):
     def GET(self):
@@ -29,7 +33,30 @@ class Handle(object):
                 return ""
         except Argument:
             return Argument
+
     def POST(self):
-        data = web.input()
+        data = web.data()
         print('post data: ', data)
-        return "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[this is a test]]></Content><MsgId>1234567890123456</MsgId></xml>"
+        xml = etree.fromstring(data)
+        print('xml: ', xml)
+        client_user = xml.find('FromUserName').text
+        server_user = xml.find('ToUserName').text
+        client_content = xml.find('Content').text
+        print('client_user: {}, server_user: {}, content: {}', client_user, server_user, client_content)
+        server_content = self.get_server_content(client_content)
+        res = self.make_response(client_user, server_user, server_content)
+        return res
+    
+    def get_server_content(self, client_content):
+        print('client_content: ', client_content)
+        server_content = client_content + '地区的热线:\n'
+        sql_contents = MysqlWrapper().query_like(client_content)
+        for sql_content in sql_contents:
+            server_content += sql_content[0] + '\n'
+        print('server_content: ', server_content)
+        return server_content
+
+    def make_response(self, client_user, server_user, server_content):
+        res = "<xml><ToUserName><![CDATA[{}]]></ToUserName><FromUserName><![CDATA[{}]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{}]]></Content><MsgId>1234567890123456</MsgId></xml>".format(client_user, server_user, server_content)
+        print(res)
+        return res
