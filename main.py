@@ -2,9 +2,11 @@
 # filename: main.py
 import web
 from handle import Handle
+from web_server import WebServer
 
 urls = (
     '/wx', 'Handle',
+    '/web', 'WebServer',
 )
 
 if __name__ == '__main__':

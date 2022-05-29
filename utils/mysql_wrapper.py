@@ -41,3 +41,19 @@ class MysqlWrapper():
     cursor.execute(sql)
     res = cursor.fetchall()
     return res
+
+  def query_like_f(self, table_name, query):
+    sql = "select content from `{}` where name like '%{}%';".format(table_name, query)
+    print(sql)
+    cursor = self._connect.cursor()
+    cursor.execute(sql)
+    res = cursor.fetchall()
+    return res
+
+  def query_like_v2(self, query):
+    res = []
+    for table_name in ['country', 'province', 'city', 'district']:
+      table_res = self.query_like(table_name, query)
+      print('table_name: {}, res: {}'.format(table_name, table_res))
+      res.extend(table_res)
+    return res
